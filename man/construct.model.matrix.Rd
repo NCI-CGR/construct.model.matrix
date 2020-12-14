@@ -5,8 +5,109 @@
 \title{Given configuration and phenotype data
 create a model matrix.}
 \usage{
-construct.model.matrix()
+construct.model.matrix(
+  phenotype.filename,
+  chip.samplefile,
+  ancestry,
+  chip,
+  phenotype.name,
+  covariate.list.csv,
+  output.filename,
+  category.filename,
+  transformation,
+  sex.specific,
+  control.inclusion.filename,
+  control.exclusion.filename
+)
+}
+\arguments{
+\item{phenotype.filename}{character vector, a filename
+of a phenotype dataset (such as the v10 with_na phenotypes
+from IMS)}
+
+\item{chip.samplefile}{character vector, a filename
+of a sample list, one sample ID per line. for reasons
+inexplicable to me at this time, the sample file
+format is actually \code{UNIQUEID_UNIQUEID} which is then
+parsed out into the single \code{UNIQUEID} instance. I think
+this is an artifact of a truly ancient version of the data,
+and is a candidate for removal for parsimony, and also
+to allow easier use of the pipeline on IDs with "_" in them}
+
+\item{ancestry}{character vector, the ancestry of the
+requested analysis. expected to be a GRAF-style ancestry
+name: "African", "African_American", "East_Asian",
+"Other_Asian_or_Pacific_Islander", "Other", "European",
+"Hispanic1", "Hispanic2", "South_Asian". note the underscore
+in these ancestries that replaces the thoroughly inconvenient
+whitespace in the raw GRAF ancestry names}
+
+\item{chip}{character vector, the name of the platform
+being analyzed. in practice, this ia really imputation
+batch: for PLCO, "GSA_batch1" is valid, "GSA" is not}
+
+\item{phenotype.name}{character vector, variable name of
+target phenotype in \code{phenotye.filename}}
+
+\item{covariate.list.csv}{character vector, a comma-delimited
+list of covariate variable names from \code{phenotype.filename},
+or the string "NA"}
+
+\item{output.filename}{character vector, the name
+of the file to which the final model matrix will be written}
+
+\item{category.filename}{character vector, the name of the
+file containing reference and comparison category labels for
+binary and categorical trait analysis, or the string "NA".
+if a file, the format is, one per line, a category from
+the phenotype variable, and the string "reference" or
+"comparison", separated by a tab. levels with the same
+"reference" or "comparison" annotation will be merged into
+a single synthetic binary phenotype in the final output matrix}
+
+\item{transformation}{character vector, the type of
+transformation to apply to the phenotype. currently accepted
+values are "none", or "post.split.INT" for an inverse
+normal transform after dataset partitioning. this is not
+currently used by any analyses, and is merely a placeholder
+for later implementations. continuous traits are always
+inverse normal transformed. in fact, the level "none"
+should be renamed to "default", I'll add this to the to-do list}
+
+\item{sex.specific}{character vector, which type of sex-specific
+analysis is requested for this model matrix. depending on the
+value, the final model matrix will be subset by the phenotype
+dataset's "sex" variable to include only the requested subjects.
+recognized values are: "combined", "female", "male"}
+
+\item{control.inclusion.filename}{character vector, the
+name of the file containing control inclusion restrictions
+in terms of phenotype dataset variables and optionally categories
+within those variables; or the string "NA". format for this
+file is: per row, a variable name, and optionally
+a comma-delimited list of variable categories denoting
+valid controls. for backwards compatibility, a variant
+of this file only containing the first column is permitted,
+in which case all non-zero levels of the variable will be
+considered inclusion levels. this is only applied to binary traits.}
+
+\item{control.exclusion.filename}{character vector, the
+name of the file containing control exclusion restrictions
+in terms of phenotype dataset variables and optionally categories
+within those variables; or the string "NA". format for this
+file is: per row, a variable name, and optionally
+a comma-delimited list of variable categories denoting
+invalid controls. for backwards compatibility, a variant
+of this file only containing the first column is permitted,
+in which case all non-zero levels of the variable will be
+considered exclusion levels. this is only applied to binary traits.}
 }
 \description{
-This function is currently a placeholder.
+Given a series of configuration options, and a phenotype
+dataset from a source like IMS, extract values relevant
+to a regression model. Check the values for consistency in
+various ways. Pull in principal components. Apply transformations
+as needed. Subset data to match the specified analysis set.
+Report the data, for use downstream directly or in part by
+tools such as SAIGE, BOLT, PLINK, etc.
 }
