@@ -1,0 +1,17 @@
+# See https://pre-commit.com for more information
+# See https://pre-commit.com/hooks.html for more hooks
+repos:
+## R support
+- repo: https://github.com/lorenzwalthert/precommit
+  rev: v0.1.3
+  hooks:
+  - id: style-files
+  - id: parsable-R
+  - id: no-browser-statement
+  - id: spell-check
+  - id: lintr
+    verbose: true
+## Note: the following three hooks apply only to R package development
+  - id: roxygenize
+  - id: deps-in-desc
+  - id: use-tidy-description

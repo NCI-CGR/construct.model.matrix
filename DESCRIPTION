@@ -1,0 +1,17 @@
+Package: construct.model.matrix
+Title: Construct Model Matrix for `plco-analysis`
+Version: 1.0.0
+Authors@R: 
+    person(given = "Cameron",
+           family = "Palmer",
+           role = c("aut", "cre"),
+           email = "palmercd@nih.gov")
+Description: Receive configuration data from `plco-analysis`
+    analysis pipeline.  Load phenotype information from file. Extract
+    relevant variables.  Perform requested and necessary data
+    manipulation. Report the results to file.
+License: use_mit_license()
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.1
