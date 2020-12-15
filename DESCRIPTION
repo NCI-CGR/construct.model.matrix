@@ -13,6 +13,8 @@ Description: Receive configuration data from `plco-analysis`
 License: use_mit_license()
 Imports:
     stringr
+Suggests: 
+    testthat
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
