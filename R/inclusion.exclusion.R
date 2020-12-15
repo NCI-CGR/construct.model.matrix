@@ -35,11 +35,13 @@ apply.inc.exc <- function(df,
   res <- df
   if (trait.is.binary) {
     ## very importantly: the filters are only applied to control subjects!
-
     ## inclusion variables work on the logic that specified
     ## (or alternatively non-zero)
     ##  entries should be included as possible controls
     for (list.entry in control.inclusion.list) {
+      ## additional input QC test: be sure any filtering variables are
+      ## actually present in the df colnames
+      stopifnot(list.entry[["var.name"]] %in% colnames(df))
       if (length(list.entry[["var.levels"]]) == 0) {
         res <- res[(res[, phenotype.name] == 0 &
           res[, list.entry[["var.name"]]] != 0) |
@@ -55,6 +57,9 @@ apply.inc.exc <- function(df,
     ##  entries should be excluded as possible controls, or if no levels are
     ##  provided, zero entries are possible controls (all nonzero are excluded)
     for (list.entry in control.exclusion.list) {
+      ## additional input QC test: be sure any filtering variables are
+      ## actually present in the df colnames
+      stopifnot(list.entry[["var.name"]] %in% colnames(df))
       if (length(list.entry[["var.levels"]]) == 0) {
         res <- res[(res[, phenotype.name] == 0 &
           res[, list.entry[["var.name"]]] == 0) |
