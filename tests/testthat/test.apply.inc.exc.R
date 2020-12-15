@@ -171,3 +171,28 @@ test_that("missing phenotype is detected correctly", {
     exclusion.list
   ))
 })
+
+test_that("missing filter variable is detected correctly", {
+  df <- data.frame(
+    pheno = sample(0:1, 1000, TRUE),
+    var3 = rnorm(1000),
+    var2 = sample(0:4, 1000, TRUE),
+    var1 = sample(1:10, 1000, TRUE)
+  )
+  inclusion.list <- list(list(
+    var.name = "var1",
+    var.levels = c(1, 2, 3)
+  ))
+  exclusion.list <- list(list(
+    var.name = "var7",
+    var.levels = c(1, 4)
+  ))
+  target <- df
+  expect_error(construct.model.matrix::apply.inc.exc(
+    df,
+    "pheno",
+    TRUE,
+    inclusion.list,
+    exclusion.list
+  ))
+})
