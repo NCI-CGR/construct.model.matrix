@@ -38,11 +38,14 @@ apply.inverse.normalization <- function(df,
     stopifnot(is.vector(element, mode = "logical"))
     stopifnot(length(element) == ncol(df))
   }
+  stopifnot(length(which(colnames(df) == "sex")) == 1)
+  res <- df
   ## for each column fulfilling at least one of the inclusion conditions
   for (col.index in which(apply(data.frame(conditions), 1, any))) {
-    for (i in unique(h$sex)) {
-      h[, col.index][h$sex == i] <-
-        inverse.normalize(h[, col.index][h$sex == i])
+    for (i in unique(res$sex)) {
+      res[, col.index][res$sex == i] <-
+        inverse.normalize(res[, col.index][res$sex == i])
     }
   }
+  res
 }
