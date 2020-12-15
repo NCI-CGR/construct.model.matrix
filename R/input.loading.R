@@ -84,7 +84,7 @@ load.inc.exc <- function(filename) {
           ## variant may need to be cast as character vectors),
           ## or possibly I'm forgetting that it's a list delimited
           ## by something other than commas
-          var.levels <- unlist(strsplit(data[i, 2]))
+          var.levels <- unlist(strsplit(data[i, 2], ","))
           current.list <- list(
             var.name = data[i, 1],
             var.levels = var.levels
