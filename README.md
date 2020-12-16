@@ -1,4 +1,4 @@
-# `construct.model.matrix`
+# `R::construct.model.matrix`
 
 ## Introduction
 
