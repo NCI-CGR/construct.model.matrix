@@ -2,14 +2,18 @@ aut
 binarization
 cre
 dataset's
+FID
+GitLab
 GRAF
 ia
 IMS
+installable
 LazyData
 linter
 linters
 lol
 mit
+modularized
 na
 nih
 ORed
@@ -18,6 +22,7 @@ phenotypes
 plco
 PLINK
 preprocessor
+repo
 Roxygen
 RoxygenNote
 SAIGE
