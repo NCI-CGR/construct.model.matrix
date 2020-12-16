@@ -23,15 +23,16 @@
 #' @param ancestry character vector, the ancestry of the
 #' requested analysis. expected to be a GRAF-style ancestry
 #' name: "African", "African_American", "East_Asian",
-#' "Other_Asian_or_Pacific_Islander", "Other", "European",
-#' "Hispanic1", "Hispanic2", "South_Asian". note the underscore
+#' "European", "Hispanic1", "Hispanic2",
+#' "Other_Asian_or_Pacific_Islander", "Other",
+#' "South_Asian". note the underscore
 #' in these ancestries that replaces the thoroughly inconvenient
 #' whitespace in the raw GRAF ancestry names
 #' @param chip character vector, the name of the platform
 #' being analyzed. in practice, this ia really imputation
 #' batch: for PLCO, "GSA_batch1" is valid, "GSA" is not
 #' @param phenotype.name character vector, variable name of
-#' target phenotype in `phenotye.filename`
+#' target phenotype in `phenotype.filename`
 #' @param covariate.list.csv character vector, a comma-delimited
 #' list of covariate variable names from `phenotype.filename`,
 #' or the string "NA"
@@ -39,7 +40,7 @@
 #' of the file to which the final model matrix will be written
 #' @param category.filename character vector, the name of the
 #' file containing reference and comparison category labels for
-#' binary and categorical trait analysis, or the string "NA".
+#' binary and categorical trait analysis, or NA.
 #' if a file, the format is, one per line, a category from
 #' the phenotype variable, and the string "reference" or
 #' "comparison", separated by a tab. levels with the same
@@ -61,7 +62,7 @@
 #' @param control.inclusion.filename character vector, the
 #' name of the file containing control inclusion restrictions
 #' in terms of phenotype dataset variables and optionally categories
-#' within those variables; or the string "NA". format for this
+#' within those variables; or NA. format for this
 #' file is: per row, a variable name, and optionally
 #' a comma-delimited list of variable categories denoting
 #' valid controls. for backwards compatibility, a variant
@@ -71,7 +72,7 @@
 #' @param control.exclusion.filename character vector, the
 #' name of the file containing control exclusion restrictions
 #' in terms of phenotype dataset variables and optionally categories
-#' within those variables; or the string "NA". format for this
+#' within those variables; or NA. format for this
 #' file is: per row, a variable name, and optionally
 #' a comma-delimited list of variable categories denoting
 #' invalid controls. for backwards compatibility, a variant
