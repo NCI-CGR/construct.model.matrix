@@ -62,8 +62,10 @@ extract.categories <- function(df,
     output.df[reference.indicator, phenotype.name] <- 0
     ## set everyone else, potentially merging low count categories, to 1
     output.df[!reference.indicator, phenotype.name] <- 1
+    output.df
+  } else {
+    df
   }
-  output.df
 }
 
 #' Convert categorical variables into binary dummies

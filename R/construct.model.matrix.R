@@ -319,6 +319,7 @@ construct.model.matrix <- function(phenotype.filename,
   ## apply category merging and extraction for categorical trait analysis
   output.df <- construct.model.matrix::extract.categories(
     output.df,
+    phenotype.name,
     category.filename
   )
 
