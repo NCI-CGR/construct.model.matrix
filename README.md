@@ -16,11 +16,31 @@ theoretically possible for someone to extend this package or use it for other pu
 
 ## Installation
 
+### With a tarball
+
 This repo is formatted as a CRAN-compliant R package and can be installed using relevant
 installation methods. It's not on CRAN, but if you have a tarball of this repository,
 you should be able to install it with the following command:
 
 `R CMD INSTALL construct.model.matrix-1.0.0.tar.gz`
+
+### With git/devtools
+
+Possibly the most practical option is to use the same process I'm using during development
+and testing. Unfortunately since this is not in CRAN or conda, you have to handle the 
+dependencies yourself. First, get a conda environment with the R packages `r-devtools`,
+`r-stringr` and `r-data.table` (or install those in base R from CRAN).
+Then clone the repo wholesale, and use `devtools` to install the package:
+
+`git clone git@10.133.130.114:palmercd/construct.model.matrix.git`
+
+`R`
+
+`require(devtools)`
+
+`devtools::install("construct.model.matrix")`
+
+### In a theoretical future with a better configured gitlab
 
 In theory, if this were posted to a correctly configured GitHub/GitLab repo, it would be
 possible to directly install this package over a valid internet connection. Now, it's not
@@ -29,7 +49,7 @@ I record here how one might do that. Within R:
 
 `require(devtools)`
 
-`devtools::install_gitlab("palmercd/construct.model.matrix")`
+`devtools::install_gitlab("10.133.130.114:palmercd/construct.model.matrix")`
 
 ## Input Data and Formats
 
