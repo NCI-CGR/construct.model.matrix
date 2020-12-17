@@ -1,6 +1,6 @@
 Package: construct.model.matrix
 Title: Construct Model Matrix for `plco-analysis`
-Version: 1.0.0
+Version: 1.1.0
 Authors@R: 
     person(given = "Cameron",
            family = "Palmer",
@@ -12,6 +12,7 @@ Description: Receive configuration data from `plco-analysis`
     manipulation. Report the results to file.
 License: use_mit_license()
 Imports:
+    data.table,
     stringr
 Suggests: 
     testthat

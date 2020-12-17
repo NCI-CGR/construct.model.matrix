@@ -196,3 +196,65 @@ test_that("missing filter variable is detected correctly", {
     exclusion.list
   ))
 })
+
+test_that("Filtering respects character vector var.levels", {
+  inclusion.list <- list(
+    list(
+      var.name = "var1",
+      var.levels = c("1", "2", "3")
+    ),
+    list(
+      var.name = "var2",
+      var.levels = c("1", "4")
+    )
+  )
+  df <- data.frame(
+    pheno = sample(0:1, 1000, TRUE),
+    var3 = rnorm(1000),
+    var2 = sample(0:4, 1000, TRUE),
+    var1 = sample(1:10, 1000, TRUE)
+  )
+  target <- df[df$pheno == 1 |
+    (df$pheno == 0 &
+      (df$var1 == 1 | df$var1 == 2 | df$var1 == 3) &
+      (df$var2 == 1 | df$var2 == 4)), ]
+  res <- construct.model.matrix::apply.inc.exc(
+    df,
+    "pheno",
+    TRUE,
+    inclusion.list,
+    list()
+  )
+  expect_identical(res, target)
+})
+
+test_that("Filtering respects factor var.levels", {
+  inclusion.list <- list(
+    list(
+      var.name = "var1",
+      var.levels = factor(c("1", "2", "3"))
+    ),
+    list(
+      var.name = "var2",
+      var.levels = factor(c("1", "4"))
+    )
+  )
+  df <- data.frame(
+    pheno = sample(0:1, 1000, TRUE),
+    var3 = rnorm(1000),
+    var2 = sample(0:4, 1000, TRUE),
+    var1 = sample(1:10, 1000, TRUE)
+  )
+  target <- df[df$pheno == 1 |
+    (df$pheno == 0 &
+      (df$var1 == 1 | df$var1 == 2 | df$var1 == 3) &
+      (df$var2 == 1 | df$var2 == 4)), ]
+  res <- construct.model.matrix::apply.inc.exc(
+    df,
+    "pheno",
+    TRUE,
+    inclusion.list,
+    list()
+  )
+  expect_identical(res, target)
+})
