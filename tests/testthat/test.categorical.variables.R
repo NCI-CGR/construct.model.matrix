@@ -112,7 +112,7 @@ test_that("Missing category tracker filenames are flagged correctly", {
 test_that("Dummy variables are generated for a single variable", {
   df <- data.frame(
     fake = rnorm(1000),
-    pheno = sample(0:5, 1000, TRUE),
+    pheno = factor(as.vector(sample(0:5, 1000, TRUE), mode = "character")),
     fake2 = rnorm(1000)
   )
   target <- df
@@ -143,8 +143,8 @@ test_that("Dummy variables are generated for a single variable", {
 test_that("Dummies are generated for multiple variables simultaneously", {
   df <- data.frame(
     fake = rnorm(1000),
-    pheno = sample(0:5, 1000, TRUE),
-    altpheno = sample(0:10, 1000, TRUE),
+    pheno = factor(as.vector(sample(0:5, 1000, TRUE), mode = "character")),
+    altpheno = factor(as.vector(sample(0:10, 1000, TRUE), mode = "character")),
     fake2 = rnorm(1000)
   )
   target <- df
@@ -223,4 +223,44 @@ test_that("Factor levels with counts below threshold are merged", {
     list(c(TRUE))
   )
   expect_identical(res, target)
+})
+
+test_that("Dummy variable ordering is lexicographically sorted", {
+  ## factor levels are sorted numerically, which doesn't
+  ## match the underlying handler. the binary variables should
+  ## be swapped
+  df <- data.frame(
+    fake = rnorm(1000),
+    pheno = factor(rep(c(0, 1, 2, 10), each = 250)),
+    fake2 = rnorm(1000)
+  )
+  target <- df
+  reference.level <- as.numeric(names(sort(table(df$pheno),
+    decreasing = TRUE
+  ))[1])
+  alt.levels <- as.numeric(names(sort(table(df$pheno),
+    decreasing = TRUE
+  ))[-1])
+  for (i in alt.levels) {
+    var.name <- paste("pheno.ref", reference.level, i, sep = ".")
+    target[, var.name] <- 0
+    target[, var.name][target$pheno == i] <- 1
+  }
+  target$pheno <- NULL
+
+  res <- construct.model.matrix::binarize(
+    df,
+    1,
+    list(
+      c(FALSE, TRUE, FALSE),
+      c(FALSE, FALSE, FALSE)
+    )
+  )
+  ## expect the order is wrong
+  expect_false(identical(res, target))
+  ## now predict the correct order
+  expect_identical(
+    res,
+    target[, c(1, 2, 3, 5, 4)]
+  )
 })
