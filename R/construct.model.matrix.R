@@ -115,7 +115,12 @@ construct.model.matrix <- function(phenotype.filename,
   possible.pcs <- paste("PC", 1:10, sep = "")
 
   ## try to read phenotype data
-  h <- read.table(phenotype.filename, header = TRUE, sep = "\t")
+  h <- data.table::fread(
+    file = phenotype.filename,
+    sep = "\t",
+    header = TRUE,
+    data.table = FALSE
+  )
   stopifnot(length(unique(colnames(h))) == length(colnames(h)))
 
   ## enforce IDs present once

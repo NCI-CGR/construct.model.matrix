@@ -12,6 +12,7 @@ Description: Receive configuration data from `plco-analysis`
     manipulation. Report the results to file.
 License: use_mit_license()
 Imports:
+    data.table,
     stringr
 Suggests: 
     testthat
