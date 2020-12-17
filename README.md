@@ -7,7 +7,7 @@ This package came about as a replacement for the corresponding script
 `palmercd/plco-analysis`. The goal of the package was to generate variant
 of the script that is modularized, extensible, testable, installable, and just
 generally better. Happily that has all seemingly been achieved approaching
-v1.0.0. The addition of formal test cases in particular using `usethis::testthat`
+v1.1.0! The addition of formal test cases in particular using `usethis::testthat`
 has been a relief.
 
 There isn't much use to installing this package for reasons other than
@@ -15,6 +15,14 @@ integration with `palmercd/plco-analysis`; but at least in this repo now, it's
 theoretically possible for someone to extend this package or use it for other purposes.
 
 ## Installation
+
+### Dependencies
+
+Certain installation methods require manual installation of dependencies, since
+this package is extremely unlikely to ever end up in CRAN or conda. If needed,
+the required dependencies are: `devtools`, `stringr`, and `data.table`. These
+can be installed with those names within R using `install.packages`, or from
+conda using those names with `r-` prepended.
 
 ### With a tarball
 
@@ -28,8 +36,7 @@ you should be able to install it with the following command:
 
 Possibly the most practical option is to use the same process I'm using during development
 and testing. Unfortunately since this is not in CRAN or conda, you have to handle the 
-dependencies yourself. First, get a conda environment with the R packages `r-devtools`,
-`r-stringr` and `r-data.table` (or install those in base R from CRAN).
+dependencies yourself, as mentioned above.
 Then clone the repo wholesale, and use `devtools` to install the package:
 
 `git clone git@10.133.130.114:palmercd/construct.model.matrix.git`
@@ -140,6 +147,8 @@ backend phenotype file. Entries are tab-delimited. There is no row ID column. St
 are not enclosed in quotation marks. The output file is plain text, not compressed.
 
 ## Version History
+
+17 December 2020: release candidate: v1.1.0! now with speeeeeedy loading.
 
 16 December 2020: release candidate: v1.0.0! this has gone very smoothly.
 
