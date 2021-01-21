@@ -79,6 +79,17 @@
 #' of this file only containing the first column is permitted,
 #' in which case all non-zero levels of the variable will be
 #' considered exclusion levels. this is only applied to binary traits.
+#' @param cleaned.chip.dir character vector, the path to and name
+#' of top-level output for the cleaned-chips-by-ancestry pipeline
+#' @param ancestry.prefix character vector, the path to and name
+#' of top-level output for the ancestry pipeline. note that this
+#' is assumed to have a trailing "/" if appropriate, to allow some
+#' filename prefix hackjob nonsense
+#' @param phenotype.id.colname character vector, the name of the ID
+#' column in the provided phenotype file; defaults to "plco_id"
+#' @param supported.chips character vector, the names of supported
+#' platforms in the current study; defaults to the four PLCO
+#' chips with non-redundant subjects
 #' @export
 construct.model.matrix <- function(phenotype.filename,
                                    chip.samplefile,
@@ -91,7 +102,16 @@ construct.model.matrix <- function(phenotype.filename,
                                    transformation,
                                    sex.specific,
                                    control.inclusion.filename,
-                                   control.exclusion.filename) {
+                                   control.exclusion.filename,
+                                   cleaned.chip.dir,
+                                   ancestry.prefix,
+                                   phenotype.id.colname = "plco_id",
+                                   supported.chips = c(
+                                     "GSA",
+                                     "Oncoarray",
+                                     "OmniX",
+                                     "Omni25"
+                                   )) {
   chip.nosubsets <- strsplit(chip, "_")[[1]][1]
   covariate.list <- unlist(strsplit(covariate.list.csv, ","))
   covariate.list <- unique(covariate.list[covariate.list != "NA"])
@@ -111,7 +131,7 @@ construct.model.matrix <- function(phenotype.filename,
   control.exclusion.list <-
     construct.model.matrix::load.inc.exc(control.exclusion.filename)
 
-  id.colname <- "plco_id"
+  id.colname <- phenotype.id.colname
   possible.pcs <- paste("PC", 1:250, sep = "")
 
   ## try to read phenotype data
@@ -168,8 +188,7 @@ construct.model.matrix <- function(phenotype.filename,
   )
 
   # load PCs for ANC/CHIP combo
-  pc.filename <- paste("/CGF/GWAS/Scans/PLCO/builds/1/",
-    "cleaned-chips-by-ancestry/",
+  pc.filename <- paste(cleaned.chip.dir, "/",
     ancestry, "/", chip.nosubsets, ".step7.evec",
     sep = ""
   )
@@ -210,14 +229,14 @@ construct.model.matrix <- function(phenotype.filename,
     colnames(h)[ncol(h)] <- pc
   }
 
-  all.chips <- c("GSA", "Omni25", "Omni5", "OmniX", "Oncoarray")
+  all.chips <- supported.chips
 
   ## partition data down to requested chip/ancestry.
   ##   This is a bit extra, but allows preflight sample size checking
   ancestry.combined <- data.frame()
   for (chip in all.chips) {
-    ancestry.data <- read.table(paste("/CGF/GWAS/Scans/PLCO/builds/1/",
-      "ancestry/PLCO_", chip,
+    ancestry.data <- read.table(paste(ancestry.prefix,
+      chip,
       ".graf_estimates.txt",
       sep = ""
     ),
@@ -307,12 +326,7 @@ construct.model.matrix <- function(phenotype.filename,
     "sex",
     "is.other.asian",
     paste("batch",
-      c(
-        "GSA",
-        "Oncoarray",
-        "OmniX",
-        "Omni25"
-      ),
+      all.chips,
       sep = "."
     )
   )

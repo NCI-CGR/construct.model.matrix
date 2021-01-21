@@ -17,7 +17,11 @@ construct.model.matrix(
   transformation,
   sex.specific,
   control.inclusion.filename,
-  control.exclusion.filename
+  control.exclusion.filename,
+  cleaned.chip.dir,
+  ancestry.prefix,
+  phenotype.id.colname = "plco_id",
+  supported.chips = c("GSA", "Oncoarray", "OmniX", "Omni25")
 )
 }
 \arguments{
@@ -102,6 +106,21 @@ invalid controls. for backwards compatibility, a variant
 of this file only containing the first column is permitted,
 in which case all non-zero levels of the variable will be
 considered exclusion levels. this is only applied to binary traits.}
+
+\item{cleaned.chip.dir}{character vector, the path to and name
+of top-level output for the cleaned-chips-by-ancestry pipeline}
+
+\item{ancestry.prefix}{character vector, the path to and name
+of top-level output for the ancestry pipeline. note that this
+is assumed to have a trailing "/" if appropriate, to allow some
+filename prefix hackjob nonsense}
+
+\item{phenotype.id.colname}{character vector, the name of the ID
+column in the provided phenotype file; defaults to "plco_id"}
+
+\item{supported.chips}{character vector, the names of supported
+platforms in the current study; defaults to the four PLCO
+chips with non-redundant subjects}
 }
 \description{
 Given a series of configuration options, and a phenotype
