@@ -112,7 +112,7 @@ construct.model.matrix <- function(phenotype.filename,
     construct.model.matrix::load.inc.exc(control.exclusion.filename)
 
   id.colname <- "plco_id"
-  possible.pcs <- paste("PC", 1:10, sep = "")
+  possible.pcs <- paste("PC", 1:250, sep = "")
 
   ## try to read phenotype data
   h <- data.table::fread(
@@ -182,7 +182,10 @@ construct.model.matrix <- function(phenotype.filename,
     )
     rownames(pc.data) <- pc.data[, 1]
     pc.data[, 1] <- NULL
-    colnames(pc.data) <- c(possible.pcs, "smartpca.condition")
+    colnames(pc.data) <- c(
+      possible.pcs[seq_len(ncol(pc.data) - 1)],
+      "smartpca.condition"
+    )
   } else {
     warning(paste("components do not exist for ancestry/chip combination ",
       ancestry,
