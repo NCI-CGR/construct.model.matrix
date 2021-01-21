@@ -39,24 +39,11 @@ and testing. Unfortunately since this is not in CRAN or conda, you have to handl
 dependencies yourself, as mentioned above.
 Then clone the repo wholesale, and use `devtools` to install the package:
 
-`git clone git@10.133.130.114:palmercd/construct.model.matrix.git`
-
 `R`
 
 `require(devtools)`
 
-`devtools::install("construct.model.matrix")`
-
-### In a theoretical future with a better configured gitlab
-
-In theory, if this were posted to a correctly configured GitHub/GitLab repo, it would be
-possible to directly install this package over a valid internet connection. Now, it's not
-posted to such a repo, so that's probably not currently possible. But for posterity's sake,
-I record here how one might do that. Within R:
-
-`require(devtools)`
-
-`devtools::install_gitlab("10.133.130.114:palmercd/construct.model.matrix")`
+`devtools::install_github("https://github.com/NCI-CGR/construct.model.matrix")`
 
 ## Input Data and Formats
 
