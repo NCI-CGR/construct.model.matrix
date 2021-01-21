@@ -4,7 +4,7 @@
 
 This package came about as a replacement for the corresponding script
 `shared-source/construct_model_matrix.R` within the repository
-`palmercd/plco-analysis`. The goal of the package was to generate variant
+`NCI-CGR/plco-analysis`. The goal of the package was to generate variant
 of the script that is modularized, extensible, testable, installable, and just
 generally better. Happily that has all seemingly been achieved approaching
 v1.0.0! The addition of formal test cases in particular using `usethis::testthat`
@@ -118,7 +118,7 @@ The primary function `construct.model.matrix` accepts the following arguments:
 
 ## Output Format
 
-The data output format is consistent with the format established in `palmercd/plco-analysis`.
+The data output format is consistent with the format established in `NCI-CGR/plco-analysis`.
 The first output row is a header of column names; the first two columns are "FID" and "IID";
 though the naming convention is consistent with traditional PLINK phenotype files, the subject
 IDs are by default derived from the "plco_id" column from the PLCO backend phenotype files. The
