@@ -7,11 +7,11 @@ This package came about as a replacement for the corresponding script
 `palmercd/plco-analysis`. The goal of the package was to generate variant
 of the script that is modularized, extensible, testable, installable, and just
 generally better. Happily that has all seemingly been achieved approaching
-v1.1.0! The addition of formal test cases in particular using `usethis::testthat`
+v1.0.0! The addition of formal test cases in particular using `usethis::testthat`
 has been a relief.
 
 There isn't much use to installing this package for reasons other than
-integration with `palmercd/plco-analysis`; but at least in this repo now, it's
+integration with `NCI-CGR/plco-analysis`; but at least in this repo now, it's
 theoretically possible for someone to extend this package or use it for other purposes.
 
 ## Installation
@@ -49,7 +49,7 @@ Then clone the repo wholesale, and use `devtools` to install the package:
 
 The main entry point function in this package, `construct.model.matrix`, builds a model matrix
 given a series of parameter specifications. This is designed to deprecate the functionality
-of the `palmercd/plco-analysis` script `shared-source/construct_model_matrix.R`.
+of the `NCI-CGR/plco-analysis` script `shared-source/construct_model_matrix.R`.
 
 The primary function `construct.model.matrix` accepts the following arguments:
 
@@ -134,6 +134,8 @@ backend phenotype file. Entries are tab-delimited. There is no row ID column. St
 are not enclosed in quotation marks. The output file is plain text, not compressed.
 
 ## Version History
+
+21 January 2021: migrate to GitHub, reset to v1.0.0 on that platform.
 
 17 December 2020: release candidate: v1.1.0! now with speeeeeedy loading.
 
