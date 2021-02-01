@@ -127,9 +127,9 @@ construct.model.matrix <- function(phenotype.filename,
   ## both control inclusion and control exclusion should be
   ##    comma-delimited lists of dataset variable names, or NA
   control.inclusion.list <-
-    construct.model.matrix::load.inc.exc(control.inclusion.filename)
+    construct.model.matrix:::load.inc.exc(control.inclusion.filename)
   control.exclusion.list <-
-    construct.model.matrix::load.inc.exc(control.exclusion.filename)
+    construct.model.matrix:::load.inc.exc(control.exclusion.filename)
 
   id.colname <- phenotype.id.colname
   possible.pcs <- paste("PC", 1:250, sep = "")
@@ -179,7 +179,7 @@ construct.model.matrix <- function(phenotype.filename,
 
   ## apply control filtering, if the trait is binary
   ##   and the configuration requests it
-  h <- construct.model.matrix::apply.inc.exc(
+  h <- construct.model.matrix:::apply.inc.exc(
     h,
     phenotype.name,
     trait.is.binary,
@@ -261,7 +261,7 @@ construct.model.matrix <- function(phenotype.filename,
   ## apply sex-stratified inverse normal transform when:
   ##   - covariate is continuous and not age covariate, or
   ##   - when analysis is FASTGWA or BOLT on the specified non-binary trait
-  h <- construct.model.matrix::apply.inverse.normalization(
+  h <- construct.model.matrix:::apply.inverse.normalization(
     h,
     list(
       grepl("_co$", colnames(h)) & !grepl("_age_", colnames(h)),
@@ -292,7 +292,7 @@ construct.model.matrix <- function(phenotype.filename,
   ##   but guarantees normality
   ## NB: this is completely useless at this point; flagged for removal
   if (transformation == "post.split.INT") {
-    h <- construct.model.matrix::apply.inverse.normalization(
+    h <- construct.model.matrix:::apply.inverse.normalization(
       h,
       list(
         grepl("_co$", colnames(h)) & !grepl("_age_", colnames(h)),
@@ -330,7 +330,7 @@ construct.model.matrix <- function(phenotype.filename,
       sep = "."
     )
   )
-  output.df <- construct.model.matrix::binarize(
+  output.df <- construct.model.matrix:::binarize(
     output.df,
     minimum.factor.level.count,
     list(
@@ -340,7 +340,7 @@ construct.model.matrix <- function(phenotype.filename,
   )
 
   ## apply category merging and extraction for categorical trait analysis
-  output.df <- construct.model.matrix::extract.categories(
+  output.df <- construct.model.matrix:::extract.categories(
     output.df,
     phenotype.name,
     category.filename
