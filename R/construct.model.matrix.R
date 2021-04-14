@@ -257,19 +257,22 @@ construct.model.matrix <- function(phenotype.filename,
 
 
 
-
+ 
   ## apply sex-stratified inverse normal transform when:
   ##   - covariate is continuous and not age covariate, or
   ##   - when analysis is FASTGWA or BOLT on the specified non-binary trait
-  h <- construct.model.matrix:::apply.inverse.normalization(
-    h,
-    list(
-      grepl("_co$", colnames(h)) & !grepl("_age_", colnames(h)),
-      grepl("bolt|fastgwa", output.filename, ignore.case = TRUE) &
-        !trait.is.binary &
-        colnames(h) == phenotype.name
-    )
-  )
+  ##.  - transformation not equal to "none"
+  if (transformation != "none") {
+    h <- construct.model.matrix:::apply.inverse.normalization(
+         h,
+         list(
+              grepl("_co$", colnames(h)) & !grepl("_age_", colnames(h)),
+              grepl("bolt|fastgwa", output.filename, ignore.case = TRUE) &
+              !trait.is.binary &
+              colnames(h) == phenotype.name
+         )
+        )
+  }
 
 
   chip.samples <- read.table(chip.samplefile,
