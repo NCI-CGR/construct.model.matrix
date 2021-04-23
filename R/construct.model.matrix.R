@@ -48,12 +48,7 @@
 #' a single synthetic binary phenotype in the final output matrix
 #' @param transformation character vector, the type of
 #' transformation to apply to the phenotype. currently accepted
-#' values are "none", or "post.split.INT" for an inverse
-#' normal transform after dataset partitioning. this is not
-#' currently used by any analyses, and is merely a placeholder
-#' for later implementations. continuous traits are always
-#' inverse normal transformed. in fact, the level "none"
-#' should be renamed to "default", I'll add this to the to-do list
+#' values are "none" and "InverseNormal".
 #' @param sex.specific character vector, which type of sex-specific
 #' analysis is requested for this model matrix. depending on the
 #' value, the final model matrix will be subset by the phenotype
@@ -261,8 +256,8 @@ construct.model.matrix <- function(phenotype.filename,
   ## apply sex-stratified inverse normal transform when:
   ##   - covariate is continuous and not age covariate, or
   ##   - when analysis is FASTGWA or BOLT on the specified non-binary trait
-  ##.  - transformation not equal to "none"
-  if (transformation != "none") {
+  ##.  - transformation equal to "none"
+  if (transformation == "InverseNormal") {
     h <- construct.model.matrix:::apply.inverse.normalization(
          h,
          list(
@@ -288,23 +283,6 @@ construct.model.matrix <- function(phenotype.filename,
   h <- h[h[, id.colname] %in% chip.samples[, 1], ]
 
 
-
-  ## adding a test: partitioning by platform causes substantial
-  ##   deviations from normality even after INT is applied on full phenotype.
-  ##   so I'm trying out post-dataset-split INT, which has its own problems
-  ##   but guarantees normality
-  ## NB: this is completely useless at this point; flagged for removal
-  if (transformation == "post.split.INT") {
-    h <- construct.model.matrix:::apply.inverse.normalization(
-      h,
-      list(
-        grepl("_co$", colnames(h)) & !grepl("_age_", colnames(h)),
-        grepl("bolt|fastgwa", output.filename, ignore.case = TRUE) &
-          !trait.is.binary &
-          colnames(h) == phenotype.name
-      )
-    )
-  }
   ## for sex-specific analyses: split here, after the combined dataset
   ##   processing and before the variable colinearity dropout stuff below
   if (sex.specific != "combined") {
