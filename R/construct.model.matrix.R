@@ -114,7 +114,7 @@ construct.model.matrix <- function(phenotype.filename,
   ## do some mild error checking on the transformation and
   ##    sex.specific freetext options
   stopifnot(transformation == "none" |
-    transformation == "post.split.INT")
+    transformation == "InverseNormal")
   stopifnot(sex.specific == "female" |
     sex.specific == "male" |
     sex.specific == "combined")
