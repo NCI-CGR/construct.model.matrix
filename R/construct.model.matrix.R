@@ -74,6 +74,26 @@
 #' of this file only containing the first column is permitted,
 #' in which case all non-zero levels of the variable will be
 #' considered exclusion levels. this is only applied to binary traits.
+#' @param case.inclusion.filename character vector, the
+#' name of the file containing case inclusion restrictions
+#' in terms of phenotype dataset variables and optionally categories
+#' within those variables; or NA. format for this
+#' file is: per row, a variable name, and optionally
+#' a comma-delimited list of variable categories denoting
+#' valid controls. for backwards compatibility, a variant
+#' of this file only containing the first column is permitted,
+#' in which case all non-zero levels of the variable will be
+#' considered inclusion levels. this is only applied to binary traits.
+#' @param case.exclusion.filename character vector, the
+#' name of the file containing case exclusion restrictions
+#' in terms of phenotype dataset variables and optionally categories
+#' within those variables; or NA. format for this
+#' file is: per row, a variable name, and optionally
+#' a comma-delimited list of variable categories denoting
+#' invalid controls. for backwards compatibility, a variant
+#' of this file only containing the first column is permitted,
+#' in which case all non-zero levels of the variable will be
+#' considered exclusion levels. this is only applied to binary traits.
 #' @param cleaned.chip.dir character vector, the path to and name
 #' of top-level output for the cleaned-chips-by-ancestry pipeline
 #' @param ancestry.prefix character vector, the path to and name
@@ -98,6 +118,8 @@ construct.model.matrix <- function(phenotype.filename,
                                    sex.specific,
                                    control.inclusion.filename,
                                    control.exclusion.filename,
+                                   case.inclusion.filename,
+                                   case.exclusion.filename,
                                    cleaned.chip.dir,
                                    ancestry.prefix,
                                    phenotype.id.colname = "plco_id",
@@ -119,12 +141,16 @@ construct.model.matrix <- function(phenotype.filename,
     sex.specific == "male" |
     sex.specific == "combined")
 
-  ## both control inclusion and control exclusion should be
+  ## both inclusion and control exclusion should be
   ##    comma-delimited lists of dataset variable names, or NA
   control.inclusion.list <-
     construct.model.matrix:::load.inc.exc(control.inclusion.filename)
   control.exclusion.list <-
     construct.model.matrix:::load.inc.exc(control.exclusion.filename)
+  case.inclusion.list <-
+    construct.model.matrix:::load.inc.exc(case.inclusion.filename)
+  case.exclusion.list <-
+    construct.model.matrix:::load.inc.exc(case.exclusion.filename)
 
   id.colname <- phenotype.id.colname
   possible.pcs <- paste("PC", 1:250, sep = "")
@@ -150,6 +176,7 @@ construct.model.matrix <- function(phenotype.filename,
       colnames(h),
       possible.pcs
     ))) == length(covariate.list))
+  
   ## enforce control inclusion variables present
   stopifnot(length(which(unname(unlist(lapply(
     control.inclusion.list,
@@ -158,6 +185,7 @@ construct.model.matrix <- function(phenotype.filename,
     }
   ))) %in% colnames(h))) ==
     length(control.inclusion.list))
+  
   ## enforce control exclusion variables present
   stopifnot(length(which(unname(unlist(lapply(
     control.exclusion.list,
@@ -166,6 +194,24 @@ construct.model.matrix <- function(phenotype.filename,
     }
   ))) %in% colnames(h))) ==
     length(control.exclusion.list))
+  
+  ## enforce case inclusion variables present
+  stopifnot(length(which(unname(unlist(lapply(
+    case.inclusion.list,
+    function(i) {
+      i[["var.name"]]
+    }
+  ))) %in% colnames(h))) ==
+    length(case.inclusion.list))
+  
+  ## enforce case exclusion variables present
+  stopifnot(length(which(unname(unlist(lapply(
+    case.exclusion.list,
+    function(i) {
+      i[["var.name"]]
+    }
+  ))) %in% colnames(h))) ==
+    length(case.exclusion.list))
 
   ## try to hack diagnose phenotype distribution for mild consistency checking
   unique.outcomes <- unique(h[, phenotype.name][!is.na(h[, phenotype.name])])
@@ -179,7 +225,9 @@ construct.model.matrix <- function(phenotype.filename,
     phenotype.name,
     trait.is.binary,
     control.inclusion.list,
-    control.exclusion.list
+    control.exclusion.list,
+    case.inclusion.list,
+    case.exclusion.list
   )
 
   # load PCs for ANC/CHIP combo
